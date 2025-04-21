@@ -2,15 +2,25 @@
 
 This API is for the real fans of one piece. The API is designed to return a JSON representation of One Pieces Openings and Endings.
 
+This Database Implements the following tools:
+
+- MySQL for data storage
+- Express.js for API routing
+- Node.js for Backend scripting and data parsing
+- MongoDB for Users storage and authenication
+- Redis for Token storage for user authenication
+
 ## Database Setup
 
 To clone this repo enter the following into your Terminal
 
-` `
+```bash
+git clone https://github.com/IsaacTheEddy/One_Piece_Song_API.git
+```
 
 Check the Song_List.csv and make sure it's Populated. After setup the MySQL database with the following file.
 
-```
+```bash
 ./sql/setup.sql
 ```
 
@@ -45,7 +55,7 @@ CREATE TABLE IF NOT EXISTS endings(
 
 Now run the `opening_storage.js` file:
 
-```js
+```bash
 node opening_storage.js
 ```
 
@@ -53,7 +63,7 @@ node opening_storage.js
 
 With the database setup run your dev server
 
-```
+```bash
 npm run dev
 ```
 
