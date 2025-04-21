@@ -37,7 +37,7 @@ export async function getOpeningById(id) {
 }
 
 export async function getSongs() {
-  const [rows] = pool.query(
+  const [rows] = await pool.query(
     `
   SELECT *
   FROM songs
@@ -47,15 +47,15 @@ export async function getSongs() {
 }
 
 export async function getSongsById(id) {
-  const [rows] = pool.query(
+  const [rows] = await pool.query(
     `
   SELECT *
   FROM songs
-  WHERE song_id = id
+  WHERE song_id = ?
   `,
     [id]
   );
-  return rows;
+  return rows[0];
 }
 
 export async function createSongs(id, song_name, artist, youtube_link) {

@@ -1,5 +1,5 @@
 import express from "express";
-import { getOpenings, getOpeningById } from "./database.js";
+import { getOpenings, getOpeningById, getSongs, getSongsById } from "./database.js";
 
 import AC from "./controllers/App.js";
 import UC from "./controllers/Users.js";
@@ -56,6 +56,17 @@ app.get("/openings/:id", (req, res, next) => {
     .then((results) => results)
     .catch(next)
 });
+
+app.get('/songs', async (req, res) => {
+  const openings = await getSongs()
+  res.send(openings)
+})
+
+app.get('/songs/:id', async (req, res) => {
+  let id = req.params.id
+  const openings = await getSongsById(id)
+  res.send(openings)
+})
 
 //POSTs
 app.post("/users", async (req, res) => {

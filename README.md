@@ -71,7 +71,7 @@ To setup your password follow these steps:
 
 ### First
 
-For your conveince keep track of your .
+For your conveince keep track of your credentials .
 
 Set your request to `POST` and go to route `"/users"` and in the body enter your email and password(Must be 8 characters minimum):
 
@@ -117,7 +117,7 @@ you will recieve a Token, Keep this token its very important.
 
 Now remove the Authorization header and Add the following to your Headers
 
-```json
+```
 Key: X-Token, Field: token recieved(exmp: "token": "6e2a9c88-4c78-499c-8214-f0da51a866ae").
 ```
 
@@ -149,4 +149,48 @@ This API is currently in early development. Features are limited
 '/openings/:id'
 ```
 
-openings returns the whole openings table and openings id returns a single object
+With the X-Token you were given after following the steps in Authorization, openings returns the whole openings table and openings id returns a single object
+
+```json
+[
+  {
+    "song_id": 1,
+    "song_name": "We Are",
+    "artist": "Hiroshi Kitadani",
+    "arcs": "['East Blue']",
+    "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=111s"
+  },
+  {
+    "song_id": 2,
+    "song_name": "Believe",
+    "artist": "older5",
+    "arcs": "['East Blue', 'Alabasta']",
+    "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=111s"
+  },
+  {
+    "song_id": 3,
+    "song_name": "Hikari e",
+    "artist": "The Babystars",
+    "arcs": "['Skypeia']",
+    "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=222s"
+  },
+  {
+    "song_id": 4,
+    "song_name": "Bon Voyage!",
+    "artist": "Bon-Bon Blanco",
+    "arcs": "['Skypeia']",
+    "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=333s"
+  },
+  {
+    "song_id": 5,
+    "song_name": "Kokoro no Chizu",
+    "artist": "BOYSTYLE",
+    "arcs": "['Water 7']",
+    "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=444s"
+  },
+```
+
+```js
+'/songs' or
+'/songs/:id'
+```
