@@ -4,6 +4,7 @@ This API is for the real fans of one piece. The API is designed to return a JSON
 
 This Database Implements the following tools:
 
+- Winston Logger for logging interactions in the API
 - MySQL for data storage
 - Express.js for API routing
 - Node.js for Backend scripting and data parsing
