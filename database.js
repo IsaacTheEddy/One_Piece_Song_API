@@ -1,6 +1,17 @@
 import mysql from "mysql2";
 import dotenv from "dotenv";
 import { resolve } from "path";
+import winston from "winston";
+
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "./logs/log.txt" }),
+  ],
+});
+
 dotenv.config();
 
 const pool = mysql

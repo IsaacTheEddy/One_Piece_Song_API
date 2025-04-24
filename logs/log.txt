@@ -1,0 +1,19 @@
+{"level":"info","message":"Succesfully populated the MySQL database with ONE PIECE!!!"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Newemail@gmail.com succesfully connected"}
+{"level":"info","message":"Added redis key to redis server"}
+{"level":"info","message":"Newemail@gmail.com returned information about themselves"}
+{"level":"info","message":"Newemail@gmail.com succesfully queried songs"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Newemail@gmail.com succesfully queried openings by ID"}
+{"level":"info","message":"Deleted Redis Token auth_15915280-048b-4250-9d91-6059b4e72c5f"}
+{"level":"info","message":"Running on port 5000"}
+{"level":"info","message":"Newemail@gmail.com succesfully connected"}
+{"level":"info","message":"Added redis key to redis server"}
+{"level":"info","message":"Newemail@gmail.com succesfully queried openings"}
+{"level":"info","message":"Newemail@gmail.com succesfully queried songs"}

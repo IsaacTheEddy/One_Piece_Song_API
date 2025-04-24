@@ -1,6 +1,16 @@
 import { json } from "express";
 import redisClient from "../utils/redis.js";
 import dbClient from "../utils/mongoDB.js";
+import winston from "winston";
+
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "./logs/log.txt" }),
+  ],
+});
 
 class AppController {
   constructor() {}
@@ -9,7 +19,7 @@ class AppController {
     try {
       const redis = await redisClient.isAlive();
       const db = await dbClient.isAlive();
-      console.log("Success");
+      logger.info(`Databases are on and connected`);
       return { redis, db };
     } catch (error) {
       console.error("Error", error);
@@ -19,7 +29,7 @@ class AppController {
   async getStats(request, response) {
     try {
       const users = await dbClient.nbUsers();
-      console.log("Success stats");
+      logger.info("Success for the stats");
       return { users };
     } catch (error) {
       console.error("Error", error);

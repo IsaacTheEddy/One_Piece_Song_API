@@ -102,8 +102,10 @@ You'll recieve a id and your email back:
 ```
 
 ### Second
-
-Enter your email and password in this nifty base64 converter in the following format email:password for a token:
+Enter your email and password in this nifty base64 converter in the following format 
+```
+email:password
+``` for a token:
 
 ```json
 {
@@ -112,7 +114,10 @@ Enter your email and password in this nifty base64 converter in the following fo
 }
 ```
 
-With the base64 string you recieve go to your API client and add to Headers:
+With the base64 string you recieve go to your API client and add to the Headers and then connect to the 
+```
+/connect
+``` route:
 example:
 
 ```
@@ -125,10 +130,10 @@ you will recieve a Token, Keep this token its very important.
 "token": "6e2a9c88-4c78-499c-8214-f0da51a866ae"
 ```
 
-Now remove the Authorization header and Add the following to your Headers
+Now disable the Authorization header and Add the following to your Headers
 
 ```
-Key: X-Token, Field: token recieved(exmp: "token": "6e2a9c88-4c78-499c-8214-f0da51a866ae").
+Key: X-Token, Field: token recieved (exmp: 6e2a9c88-4c78-499c-8214-f0da51a866ae).
 ```
 
 ### Third
@@ -148,18 +153,21 @@ you'll recieve results in json:
 }
 ```
 
-If you recieve data then your all set to test the openings API!!!
+If you recieve data then your all set to explore the API!!! Just remember to keep your X-Token in your Header
 
 ## Request Types
 
 This API is currently in early development. Features are limited
+
+
+With the X-Token you were given after following the steps in Authorization, openings returns the whole openings table and openings id returns a single object
 
 ```js
 '/openings' or
 '/openings/:id'
 ```
 
-With the X-Token you were given after following the steps in Authorization, openings returns the whole openings table and openings id returns a single object
+
 
 ```json
 [
@@ -199,8 +207,31 @@ With the X-Token you were given after following the steps in Authorization, open
     "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=444s"
   },
 ```
+With the X-Token you were given after following the steps in Authorization, songs returns the strictly songs and songs id returns a single object
 
 ```js
 '/songs' or
 '/songs/:id'
+```
+
+
+```js
+   {
+        "song_id": 1,
+        "song_name": "We Are",
+        "artist": "Hiroshi Kitadani",
+        "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=111s"
+    },
+    {
+        "song_id": 2,
+        "song_name": "Believe",
+        "artist": "older5",
+        "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=111s"
+    },
+    {
+        "song_id": 3,
+        "song_name": "Hikari e",
+        "artist": "The Babystars",
+        "youtube_link": "https://www.youtube.com/watch?v=1CV5vYtD6mA&t=222s"
+    },...
 ```

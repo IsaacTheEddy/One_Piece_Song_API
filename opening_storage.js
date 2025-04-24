@@ -2,6 +2,16 @@ import parser from "csv-parser";
 import fs from "fs";
 
 import { createSongs, createOpening } from "./database.js";
+import winston from "winston";
+
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "./logs/log.txt" }),
+  ],
+});
 
 async function Songs() {
   const rows = await new Promise((resolve, reject) => {
@@ -24,11 +34,12 @@ async function Songs() {
 
         const songs = await createSongs(Id, song_name, artist, youtube_link);
 
-        await createOpening(Id, songs, arcs);
+        await createOpening(Id, songs, arcs)
       }
     }
+    logger.info("Succesfully populated the MySQL database with ONE PIECE!!!")
   } catch (error) {
-    console.log("Here");
+    logger.error(error.message);
   }
 }
 

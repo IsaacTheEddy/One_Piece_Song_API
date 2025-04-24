@@ -2,8 +2,18 @@ import { v4 as uuidv4 } from "uuid";
 import redisClient from "../utils/redis.js";
 import dbClient from "../utils/mongoDB.js";
 import { ObjectId } from "mongodb";
-import { getOpenings, getOpeningById } from "../database.js";
+import { getOpenings, getOpeningById, getSongs, getSongsById } from "../database.js";
 import sha1 from "sha1";
+import winston from "winston";
+
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "./logs/log.txt" }),
+  ],
+});
 
 class AuthController {
   constructor() { }
@@ -46,13 +56,14 @@ class AuthController {
       const setter = async () => {
         try {
           await redisClient.set(redisKey, user._id.toString(), 86400);
-          console.log("Added redis key to redis server");
+          logger.info("Added redis key to redis server");
         } catch (error) {
-          console.error(error, "hello");
+          logger.error(error, "hello");
         }
       };
 
       setter();
+      logger.info(`${email} succesfully connected`)
 
       return res.status(200).json({ token });
     } catch (error) {
@@ -71,7 +82,8 @@ class AuthController {
       if (!userId) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      let del = await redisClient.del(redisKey);
+      let del = await redisClient.del(redisKey)
+      .then(logger.info(`Deleted Redis Token ${redisKey}`));
       return res.status(204).json(del);
     } catch (error) {
       return res.status(500).json({ error: error.message });
@@ -105,9 +117,10 @@ class AuthController {
       if (!openings) {
         return res.status(404).json({ openings })
       }
+      logger.info(`${user.email} succesfully queried openings`)
       return res.json(openings)
     } catch (err) {
-      return console.error(err.message)
+      return logger.error(err.message)
     }
   }
 
@@ -138,12 +151,85 @@ class AuthController {
       if (!openings) {
         return res.status(404).json({ openings })
       }
+      logger.info(`${user.email} succesfully queried openings by ID`)
       return res.json(openings)
     } catch (err) {
-      return console.error(err.message)
+      return logger.error(err.message)
     }
   }
+
+  async getSongs(req, res) {
+    const token = req.headers['x-token'];
+    if (!token) {
+      return res.status(401).json({ error: 'No token' });
+    }
+
+    const db = dbClient.getDB();
+    if (!db) {
+      return res.status(500).json({ error: 'No connection' });
+    }
+
+    const redisKey = `auth_${token}`;
+    const userID = await redisClient.get(redisKey);
+    if (!userID) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    try {
+      const user = await db.collection('users').findOne({ _id: new ObjectId(userID) })
+      if (!user) {
+        return res.status(401).json({ error: 'Not found 1' })
+      }
+      const songs = await getSongs();
+
+      if (!songs) {
+        return res.status(404).json({ songs })
+      }
+      logger.info(`${user.email} succesfully queried songs`)
+      return res.json(songs)
+    } catch (err) {
+      return logger.error(err.message)
+    }
+  }
+
+  async getSongsById(req, res, id) {
+    const token = req.headers['x-token'];
+    if (!token) {
+      return res.status(401).json({ error: 'No token' });
+    }
+
+    const db = dbClient.getDB();
+    if (!db) {
+      return res.status(500).json({ error: 'No connection' });
+    }
+
+    const redisKey = `auth_${token}`;
+    const userID = await redisClient.get(redisKey);
+    if (!userID) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    try {
+      const user = await db.collection('users').findOne({ _id: new ObjectId(userID) })
+      if (!user) {
+        return res.status(401).json({ error: 'Not found 1' })
+      }
+      const song = await getSongsById(id);
+
+      if (!song) {
+        return res.status(404).json({ song })
+      }
+      logger.info(`${user.email} succesfully queried openings by ID`)
+      return res.json(song)
+    } catch (err) {
+      return logger.error(err.message)
+    }
 }
+}
+
+
+
+
 
 
 

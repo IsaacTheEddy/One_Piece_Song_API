@@ -3,6 +3,16 @@ import redisClient from "../utils/redis.js";
 import dbClient from "../utils/mongoDB.js";
 import sha1 from "sha1";
 import { ObjectId } from "mongodb";
+import winston from "winston";
+
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "./logs/log.txt" }),
+  ],
+});
 
 class UsersController {
   async postNew(req, res) {
@@ -33,9 +43,12 @@ class UsersController {
         .collection("users")
         .insertOne({ email, password: hashed });
 
-      res.status(201).json({ id: insertedId.toString(), email });
+        logger.info(`New User Created with email ${email}`)
+
+
+      return res.status(201).json({ id: insertedId.toString(), email} );
     } catch (err) {
-      console.error("UsersController.postNew error:", err.message);
+      logger.error(err.message);
       return res.status(500).json({ error: "Internal error" });
     }
   }
@@ -49,6 +62,7 @@ class UsersController {
 
     const db = dbClient.getDB();
     if (!db) {
+      logger.info('Database Failed /Users.js Post New')
       return res.status(500).json({ error: "Database connection failed" });
     }
 
@@ -68,7 +82,7 @@ class UsersController {
         return res.status(401).json({ error: "no user at all" });
       }
       const result = { id: user._id, email: user.email };
-
+      logger.info(`${user.email} returned information about themselves`)
       return res.json(result); // Return id and email only
     } catch (error) {
       console.error("Error in getMe:", error);

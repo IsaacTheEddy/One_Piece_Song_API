@@ -10,9 +10,11 @@ const app = express();
 const PORT = 5000;
 
 const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "./logs/log" }),
+    new winston.transports.File({ filename: "./logs/log.txt" }),
   ],
 });
 
@@ -20,7 +22,7 @@ app.use(express.json());
 
 // GETs
 app.get("/status", async (req, res) => {
-  logger.warn("");
+  logger.info("Checked the Status of the databases");
   res.send(await AC.getStatus());
 });
 
@@ -57,15 +59,17 @@ app.get("/openings/:id", (req, res, next) => {
     .catch(next)
 });
 
-app.get('/songs', async (req, res) => {
-  const openings = await getSongs()
-  res.send(openings)
+app.get('/songs', (req, res, next) => {
+  AT.getSongs(req, res)
+  .then((results) => results)
+  .catch(next)
 })
 
-app.get('/songs/:id', async (req, res) => {
+app.get('/songs/:id',(req, res, next) => {
   let id = req.params.id
-  const openings = await getSongsById(id)
-  res.send(openings)
+  AT.getSongsById(req, res, id)
+  .then((results) => results)
+  .catch(next)
 })
 
 //POSTs
@@ -74,5 +78,5 @@ app.post("/users", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Running on port 5000`);
+  logger.info(`Running on port 5000`);
 });
